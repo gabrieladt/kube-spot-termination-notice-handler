@@ -1,6 +1,6 @@
 Forked from https://github.com/mumoshu/kube-spot-termination-notice-handler
 
-With some small changes like send cpu_usage function, that is used to pull Requested CPU and MEMORY from spot nodes and later, these metrics can be used by autoscalers.
+With some small changes like send cpu_usage function, that is used to pull Requested CPU and MEMORY from spot nodes and inject then into cloudwatch and later, these metrics can be used by autoscaler, in my recomendation Spot Fleet Advisor.
 
 With this, you are able to work "over provisioned", what is important for spot intance setup.
 
