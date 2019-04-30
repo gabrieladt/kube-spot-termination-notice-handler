@@ -12,8 +12,8 @@ send_cpu_usage () {
         do
         TOTAL=$(kubectl describe nodes $NODE_NAME_DESC | grep -A 4 "Allocated resources" | tail -n 1 | awk '{print $2}' | tr -d '(,),%')
         MEM_TOTAL=$(kubectl describe nodes $NODE_NAME_DESC | grep -A 4 "Allocated resources" | tail -n 1 | awk '{print $6}' | tr -d '(,),%')
-        /usr/bin/aws cloudwatch put-metric-data --region ${EC2_REGION} --metric-name UsedCpu --namespace k8sCluster --unit None --value ${TOTAL} --dimensions K8sCluster=${CLUSTER}
-        /usr/bin/aws cloudwatch put-metric-data --region ${EC2_REGION} --metric-name UsedMemory --namespace k8sCluster --unit None --value ${MEM_TOTAL} --dimensions K8sCluster=${CLUSTER}
+        /usr/bin/aws cloudwatch put-metric-data --region ${EC2_REGION} --metric-name CpuUsage --namespace k8s --unit None --value ${TOTAL} --dimensions ClusterName=${CLUSTER},NodeGroupName=${NODE_GROUP_NAME}
+        /usr/bin/aws cloudwatch put-metric-data --region ${EC2_REGION} --metric-name MemoryUsage --namespace k8s --unit None --value ${MEM_TOTAL} --dimensions ClusterName=${CLUSTER},NodeGroupName=${NODE_GROUP_NAME}
         echo "Sending metric node ${NODE_NAME_DESC} value: ${TOTAL}"
         sleep 60
     done
@@ -68,8 +68,8 @@ NOTICE_URL=${NOTICE_URL:-http://169.254.169.254/latest/meta-data/spot/terminatio
 
 echo "Polling ${NOTICE_URL} every ${POLL_INTERVAL} second(s)"
 
-#Loop send cpu 
-send_cpu_usage ${NODE_NAME} ${CLUSTER_INFO} &
+#Loop send cpu
+send_cpu_usage ${NODE_NAME} ${CLUSTER} &
 
 # To whom it may concern: http://superuser.com/questions/590099/can-i-make-curl-fail-with-an-exitcode-different-than-0-if-the-http-status-code-i
 while http_status=$(curl -o /dev/null -w '%{http_code}' -sL ${NOTICE_URL}); [ ${http_status} -ne 200 ]; do
