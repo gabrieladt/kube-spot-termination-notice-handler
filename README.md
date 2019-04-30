@@ -4,6 +4,9 @@ With some small changes like send cpu_usage function, that is used to pull Reque
 
 With those metrics, you are able to work "over provisioned", what is important for spot intance setup.
 
+Attention
+Was added a new variable NODE_GROUP_NAME, used to segregate cpu and memory usage, by Auto Scaling Group and/or Spot Fleet.
+
 ###
 A Kubernetes DaemonSet to run 1 container per node to periodically polls the [EC2 Spot Instance Termination Notices](https://aws.amazon.com/blogs/aws/new-ec2-spot-instance-termination-notices/) endpoint.
 Once a termination notice is received, it will try to gracefully stop all the pods running on the Kubernetes node, up to 2 minutes before the EC2 Spot Instance backing the node is terminated.
@@ -86,8 +89,8 @@ Example Pod Spec:
             value: "https://hooks.slack.com/services/T67UBFNHQ/B4Q7WQM52/1ctEoFjkjdjwsa22934"
           - name: CLUSTER
             value: development
-          - name: NODE_GROUP_NAME
-            value: ASG/SpotFleet node name
+          - name: NODE_GROUP_NAME (ADDED NEW)
+            value: ASG/SpotFleet node name 
 ```
 
 ## Credits
