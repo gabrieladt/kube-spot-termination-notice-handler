@@ -86,6 +86,8 @@ Example Pod Spec:
             value: "https://hooks.slack.com/services/T67UBFNHQ/B4Q7WQM52/1ctEoFjkjdjwsa22934"
           - name: CLUSTER
             value: development
+          - name: NODE_GROUP_NAME
+            value: ASG/SpotFleet node name
 ```
 
 ## Credits
